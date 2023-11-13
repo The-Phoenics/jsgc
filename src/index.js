@@ -18,7 +18,7 @@ function clear() {
 const GRAVITY = 2;
 const PLAYER_VEL_MAG = 1; // player velocity magnitude
 const PLAYER_JUMP_MAG = 8; // player jump magnitude
-const JUMP_LIMIT = 100;
+const JUMP_LIMIT = 120;
 
 class Vec2 {
     constructor(x, y) {
@@ -67,6 +67,7 @@ class Entity {
         this.isAttacking = false;
         this.isFacingRight = isFacingRight;
         this.currentJumpMagnitude = 0;
+        this.isFalling = false;
         this.weapon = new Weapon({
             position: {
                 x: this.x,
@@ -83,8 +84,18 @@ class Entity {
         this.x += this.velX;
         this.y += this.velY;
         this.y += GRAVITY;
+        this.currentJumpMagnitude += Math.abs(this.velY);
+        if (this.currentJumpMagnitude >= JUMP_LIMIT) {
+            this.velY = 0;
+            this.currentJumpMagnitude = 0;
+        }
+        // update isFalling/isInAir
+        this.isFalling = this.y + this.h < CHEIGHT;
+        
+        // keep Entity within windows bounds
         this.keepInBounds();
         
+        // update weapon position left/right
         let weapon_xpos = this.x; 
         if (!this.isFacingRight) {
             weapon_xpos = this.x - (this.weapon.w - this.w);
@@ -110,11 +121,6 @@ class Entity {
     jump() {
         if (this.currentJumpMagnitude < JUMP_LIMIT) {
             this.velY = -5;
-            this.currentJumpMagnitude += Math.abs(this.velY);
-        }
-        else {
-            this.velY = 0;
-            this.currentJumpMagnitude = 0;
         }
     }
 
@@ -181,8 +187,6 @@ window.addEventListener('keydown', (e) => {
             break;
 
         case 'w':
-            // player.velY = -PLAYER_JUMP_MAG;
-            player.jump();
             break;
 
         case ' ':
@@ -202,10 +206,6 @@ window.addEventListener('keydown', (e) => {
             enemy.isFacingRight = true;
             break;
 
-        case 'ArrowUp':
-            enemy.velY = -5;
-            break;
-
         case 'ArrowDown':
             enemy.isAttacking = true;
             break;
@@ -223,12 +223,10 @@ window.addEventListener('keyup', (e) => {
             break;
 
         case 'w':
-            player.velY = 0;
+            if (!player.isFalling) {
+                player.jump();
+            }
             break;
-
-        // case ' ':
-        //     player.isAttacking = true;
-        //     break;
         
         // enemy:
         case 'ArrowLeft':
@@ -240,12 +238,10 @@ window.addEventListener('keyup', (e) => {
             break;
 
         case 'ArrowUp':
-            enemy.velY = 0;
+            if (!enemy.isFalling) {
+                enemy.jump();
+            }
             break;
-
-        // case 'ArrowDown':
-        //     enemy.isAttacking = true;
-        //     break;
     }
 });
 
