@@ -1,0 +1,3 @@
+# jsgc
+
+Javascript games collection
