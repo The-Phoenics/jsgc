@@ -2,15 +2,44 @@
     <style>
         html, body {
             background-color: #666;
+            position: relative;
         }
-        
+
         canvas {
             display: block;
-            margin: 150px auto;
+            margin: 0 auto;
+        }
+
+        #timer {
+            color: rgb(236, 236, 236);
+            display: block;
+            margin: 10px auto;
+            margin-bottom: 0px;
+            margin-top: 50px;
+            text-align: center;
+            font-size: 2.5rem;
+            width: 20%;
+            padding: 10px;
+        }
+
+        h1 {
+            color: red;
+            position: absolute;
+            top: 44%;
+            left: 44%;
+            display: none;
         }
     </style>
     <body>
+        <div style="display: none;">
+            <img id="game-backg" src="./img/background.png" alt="">
+        </div>
+        <div id="timer">
+            15
+        </div>
+        <h1>Game Over</h1>
         <canvas></canvas>
     </body>
     <script src="src/index.js"></script>
+    <script src="src/utils.js"></script>
 </html>
