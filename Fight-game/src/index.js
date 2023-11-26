@@ -1,8 +1,14 @@
-const canvas = document.querySelector('canvas');
-const ctx = canvas.getContext('2d');
+import Entity from './Entity.js'
+import Animator from './Animator.js';
+import Player from './Player.js';
+import { aabb } from "./utils.js";
+import { PLAYER_VEL_MAG } from './Player.js';
 
-const CWIDTH = 1024;
-const CHEIGHT = 576;
+const canvas = document.querySelector('canvas');
+export const ctx = canvas.getContext('2d');
+
+export const CWIDTH = 1024;
+export const CHEIGHT = 576;
 
 canvas.width = CWIDTH;
 canvas.height = CHEIGHT;
@@ -15,155 +21,8 @@ function clear() {
 }
 
 // globals
-const GRAVITY = 2;
-const PLAYER_VEL_MAG = 1; // player velocity magnitude
-const PLAYER_JUMP_MAG = 8; // player jump magnitude
-const JUMP_LIMIT = 140;
-let GAME_OVER = false;
-const PLATFORM_DIST_FROM_BOTTOM = 96;
-
-class Vec2 {
-    constructor(x, y) {
-        this.x = x;
-        this.y = y;
-    }
-
-    addInto(otherVec2) {
-        this.x += otherVec2.x;
-        this.y += otherVec2.y;
-    }
-}
-
-class Weapon {
-    constructor({ position, dimension, color = 'green' }) {
-        this.x = position.x;
-        this.y = position.y;
-        this.w = dimension.w;
-        this.h = dimension.h;
-        this.color = color;
-    }
-
-    update({ position, dimension }) {
-        this.x = position.x;
-        this.y = position.y;
-        this.w = dimension.w;
-        this.h = dimension.h;
-    }
-
-    render() {
-        ctx.fillStyle = this.color;
-        ctx.fillRect(this.x, this.y, this.w, this.h);
-    }
-}
-
-class Entity {
-    constructor({ position, dimension, velocity, color = 'red' }, isFacingRight = true) {
-        this.x = position.x;
-        this.y = position.y;
-        this.w = dimension.x;
-        this.h = dimension.y;
-        this.velX = velocity.x;
-        this.velY = velocity.y;
-        this.color = color;
-        this.lastKey = null;
-        this.isAttacking = false;
-        this.isFacingRight = isFacingRight;
-        this.currentJumpMagnitude = 0;
-        this.isFalling = false;
-        this.health = 100;
-
-        this.weapon = new Weapon({
-            position: {
-                x: this.x,
-                y: this.y
-            },
-            dimension: {
-                w: 100, // width & height of weapon rect
-                h: 50
-            }
-        });
-
-        this.healthBar = new HealthBar({
-            position: {
-                x: this.x,
-                y: this.y
-            },
-            dimension: {
-                w: this.w * 2,
-                h: this.h / 20
-            }
-        });
-    }
-
-    update() {
-        this.x += this.velX;
-        this.y += this.velY;
-        this.y += GRAVITY;
-        this.currentJumpMagnitude += Math.abs(this.velY);
-        if (this.currentJumpMagnitude >= JUMP_LIMIT) {
-            this.velY = 0;
-            this.currentJumpMagnitude = 0;
-        }
-        // update isFalling/isInAir
-        this.isFalling = this.y + this.h < CHEIGHT - PLATFORM_DIST_FROM_BOTTOM;
-
-        // keep Entity within windows bounds
-        this.keepInBounds();
-
-        // update weapon position left/right
-        let weapon_xpos = this.x;
-        if (!this.isFacingRight) {
-            weapon_xpos = this.x - (this.weapon.w - this.w);
-        }
-        this.weapon.update({
-            position: {
-                x: weapon_xpos,
-                y: this.y
-            },
-            dimension: {
-                w: this.weapon.w,
-                h: this.weapon.h
-            }
-        })
-
-        // middle x-position
-        let x_mid = this.x - (this.healthBar.w / 2 - this.w / 2);
-        this.healthBar.update({
-            position: {
-                x: x_mid,
-                y: this.y
-            }
-        }, this.health);
-    }
-
-    render() {
-        ctx.fillStyle = this.color;
-        ctx.fillRect(this.x, this.y, this.w, this.h);
-        // this.weapon.render(); // DBG
-        this.healthBar.render();
-    }
-
-    jump() {
-        if (this.currentJumpMagnitude < JUMP_LIMIT) {
-            this.velY = -5;
-        }
-    }
-
-    keepInBounds() {
-        if (this.x < 0) {
-            this.x = 0;
-        }
-        if (this.x > CWIDTH - this.w) {
-            this.x = CWIDTH - this.w;
-        }
-        if (this.y < 0) {
-            this.y = 0;
-        }
-        if (this.y > CHEIGHT - this.h - PLATFORM_DIST_FROM_BOTTOM) {
-            this.y = CHEIGHT - this.h - PLATFORM_DIST_FROM_BOTTOM
-        }
-    }
-}
+export const GRAVITY = 2;
+export let GAME_OVER = false;
 
 class Drawable {
     constructor({ imageSrc, position }) {
@@ -178,89 +37,6 @@ class Drawable {
 
     render() {
         ctx.drawImage(this.image, this.position.x, this.position.y)
-    }
-}
-
-class HealthBar {
-    constructor({ position, dimension }, healthValue = 100) {
-        this.x = position.x;
-        this.y = position.y;
-        this.w = dimension.w;
-        this.h = dimension.h;
-        this.bgcolor = 'white';
-        this.healthColor = 'green';
-        this.health = healthValue;
-        this.offset = {
-            x: 0,
-            y: 20
-        };
-    }
-
-    update({ position }, healthValue) {
-        this.x = position.x - this.offset.x;
-        this.y = position.y - this.offset.y;
-        this.health = healthValue
-    }
-
-    render() {
-        ctx.fillStyle = this.bgcolor;
-        ctx.fillRect(this.x, this.y, this.w, this.h);
-        this.renderHealth();
-    }
-
-    renderHealth() {
-        ctx.fillStyle = this.healthColor;
-        let score_percent = (this.health / 100) * this.w;
-        ctx.fillRect(this.x, this.y, this.health, this.h);
-    }
-}
-
-class Animator {
-    constructor({ imageSrc, position, dimension, spritesheet }, scale = 1) {
-        this.position = position;
-        this.image = new Image();
-        this.scale = scale;
-        this.image.src = imageSrc;
-        this.currentFrameX = 0;
-        this.currentFrameY = 0;
-        this.row = spritesheet.row;
-        this.column = spritesheet.column;
-        this.w = dimension.w;
-        this.h = dimension.h;
-
-        this.sx = 0;
-        this.sy = 0;
-        this.sw = this.image.width / this.column
-        this.sh = this.image.height / this.row
-
-        this.tmp = 0;
-    }
-
-    update() {
-        this.tmp++;
-        if (this.tmp >= 2000) {
-            this.tmp = 0;
-            console.log(this.tmp);
-            this.currentFrameX++;
-        }
-
-        if (this.currentFrameX >= this.column) {
-            this.currentFrameX = 0;
-        }
-    }
-
-    render() {
-        ctx.drawImage(
-            this.image,
-            this.sx + this.sw * this.currentFrameX,
-            this.sy + this.sh * this.currentFrameY,
-            this.sw,
-            this.sh,
-            this.position.x,
-            this.position.y,
-            this.w,
-            this.h
-        );
     }
 }
 
@@ -280,13 +56,9 @@ let shop = new Animator({
         y: 230
     },
     imageSrc: './img/shop.png',
-    // dimension: {
-    //     w: 240,
-    //     h: 250
-    // },
     dimension: {
-        w: 440,
-        h: 450
+        w: 240,
+        h: 250
     },
     spritesheet: {
         row: 1,
@@ -295,12 +67,15 @@ let shop = new Animator({
 });
 
 // player
-let player = new Entity({
-    position: { x: 400, y: 400 },
-    dimension: { x: 50, y: 150 },
-    velocity: { x: 0, y: 0 },
-    color: 'blue'
-});
+// let player = new Entity({
+//     position: { x: 400, y: 400 },
+//     dimension: { x: 50, y: 150 },
+//     velocity: { x: 0, y: 0 },
+//     color: 'blue'
+// });
+
+
+let player = new Player();
 
 // enemy
 let enemy = new Entity({
@@ -495,13 +270,3 @@ setInterval(() => {
         GAME_OVER = true;
     }
 }, 1000);
-
-// aabb collision detection
-function aabb({ rect1, rect2 }) {
-    return (
-        rect1.x < rect2.x + rect2.w &&
-        rect1.x + rect1.w > rect2.x &&
-        rect1.y < rect2.y + rect2.h &&
-        rect1.y + rect1.h > rect2.y
-    );
-}

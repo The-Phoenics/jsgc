@@ -1,13 +1,18 @@
 <html>
     <style>
-        html, body {
+        body {
+            height: 100vh;
             background-color: #666;
             position: relative;
+            background-image: linear-gradient(rgba(1, 1, 1, 0.3), rgba(1, 1, 1, 0.5)), url(./img/Ocean.png);
+            background-position: center;
+            background-size: cover;
         }
 
         canvas {
             display: block;
             margin: 0 auto;
+            border-radius: 3px;
         }
 
         #timer {
@@ -40,6 +45,5 @@
         <h1>Game Over</h1>
         <canvas></canvas>
     </body>
-    <script src="src/index.js"></script>
-    <script src="src/utils.js"></script>
+    <script type="module" defer src="src/index.js"></script>
 </html>
