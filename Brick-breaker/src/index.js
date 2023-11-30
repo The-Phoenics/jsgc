@@ -1,25 +1,16 @@
 import Entity from "./Entity.js";
 import Paddle from "./Paddle.js";
+import Brick from "./Brick.js";
 import { aabb } from "./utils.js";
 
-const canvas = document.querySelector('canvas');
-export const ctx = canvas.getContext('2d');
+import { MARGIN, brickHeight, brickWidth, ROW, COL, TOTAL_BRICKS } from "./Brick.js";
+import { C_WIDTH, C_HEIGHT, CANVAS_CONTEXT as ctx, CANVAS as canvas } from "./Globals.js";
+import { clear_canvas } from "./Globals.js";
 
-export const CWIDTH = 1024;
-export const CHEIGHT = 576;
-
-canvas.width = CWIDTH;
-canvas.height = CHEIGHT;
+export const PLATFORM_DIST_FROM_BOTTOM = 0;
+export let GAME_OVER = false;
 
 ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-function clear() {
-    ctx.fillStyle = 'black';
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-}
-
-let GAME_OVER = false;
-export const PLATFORM_DIST_FROM_BOTTOM = 0;
 
 // ----------------------------------------- //
 
@@ -38,8 +29,25 @@ let ball = new Entity({
         x: 2,
         y: 2
     }
-})
+}, true)
 
+const bricks = [];
+function initBricks() {
+    let x = 10;
+    let y = 200;
+    for (let i = 0; i < 5; i++) {
+        let brick = new Brick(x, y);
+        bricks.push(brick)
+        x += brickWidth + MARGIN
+    }
+}
+initBricks();
+
+function renderBricks() {
+    bricks.forEach(brick => {
+        brick.render()
+    })
+}
 
 // game loop
 function animate() {
@@ -60,6 +68,7 @@ function runGame() {
     render();    
 }
 
+// ----------------- Update ----------------- //
 function update() {
     ball.update();
     ball.bounce();
@@ -73,14 +82,23 @@ function update() {
     }
 
     // game over
-    if (ball.y + ball.h >= CHEIGHT) {
+    if (ball.y + ball.h >= C_HEIGHT) {
         GAME_OVER = true;
     }
+
+    bricks.forEach(brick => {
+        if (aabb({rect1: brick, rect2: ball})) {
+            console.log('Collided!')
+            ball.velY *= -1
+        }
+    })
 }
 
+// ----------------- Render ----------------- //
 function render() {
-    clear();
-    ball.render();
+    clear_canvas()
+    renderBricks()
+    ball.render()
     paddle.render()
 }
 
@@ -88,6 +106,7 @@ function onGameOver() {
     console.log('Game Over!!');
 }
 
+// ----------------- Events ----------------- //
 window.addEventListener('keydown', (e) => {
     if (e.key === 'd') {
         paddle.velX = 2

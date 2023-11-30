@@ -1,5 +1,5 @@
 import Entity from "./Entity.js";
-import { CWIDTH } from "./index.js";
+import { C_WIDTH, CANVAS_CONTEXT as ctx } from "./Globals.js";;
 
 class Paddle extends Entity {
     constructor() {
@@ -29,7 +29,7 @@ class Paddle extends Entity {
         if (this.x < 0) {
             this.velX *= -1;
         }
-        if (this.x + this.w >= CWIDTH) {
+        if (this.x + this.w >= C_WIDTH) {
             this.velX *= -1;
         }
     }

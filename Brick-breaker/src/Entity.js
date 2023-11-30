@@ -1,7 +1,8 @@
-import { CWIDTH, CHEIGHT, ctx, PLATFORM_DIST_FROM_BOTTOM } from "./index.js";
+import { PLATFORM_DIST_FROM_BOTTOM } from "./index.js";
+import { C_WIDTH, C_HEIGHT, CANVAS_CONTEXT as ctx } from "./Globals.js";;
 
 class Entity {
-    constructor({ position, dimension, velocity, color = 'red' }) {
+    constructor({ position, dimension, velocity, color = 'red' }, isCircular = false, radius = 10) {
         this.x = position.x;
         this.y = position.y;
         this.w = dimension.w;
@@ -11,6 +12,8 @@ class Entity {
         this.color = color;
         this.isFalling = false;
         this.health = 100;
+        this.isCircular = isCircular
+        this.radius = radius
     }
 
     update() {
@@ -20,21 +23,28 @@ class Entity {
 
     render() {
         ctx.fillStyle = this.color;
-        ctx.fillRect(this.x, this.y, this.w, this.h);
+        if (this.isCircular) {
+            ctx.beginPath();
+            ctx.arc(this.x + this.radius, this.y + this.radius, this.radius, 0, Math.PI*2, true);
+            ctx.fill()
+        }
+        else {
+            ctx.fillRect(this.x, this.y, this.w, this.h);
+        }
     }
 
     keepInBounds() {
         if (this.x < 0) {
             this.x = 0;
         }
-        if (this.x > CWIDTH - this.w) {
-            this.x = CWIDTH - this.w;
+        if (this.x > C_WIDTH - this.w) {
+            this.x = C_WIDTH - this.w;
         }
         if (this.y < 0) {
             this.y = 0;
         }
-        if (this.y > CHEIGHT - this.h - PLATFORM_DIST_FROM_BOTTOM) {
-            this.y = CHEIGHT - this.h - PLATFORM_DIST_FROM_BOTTOM
+        if (this.y > C_HEIGHT - this.h - PLATFORM_DIST_FROM_BOTTOM) {
+            this.y = C_HEIGHT - this.h - PLATFORM_DIST_FROM_BOTTOM
         }
     }
 
@@ -42,14 +52,14 @@ class Entity {
         if (this.x < 0) {
             this.velX *= -1;
         }
-        if (this.x > CWIDTH - this.w) {
+        if (this.x > C_WIDTH - this.w) {
             this.velX *= -1;
         }
         if (this.y < 0) {
             this.velY *= -1
         }
-        if (this.y > CHEIGHT - this.h - PLATFORM_DIST_FROM_BOTTOM) {
-            this.y = CHEIGHT - this.h - PLATFORM_DIST_FROM_BOTTOM
+        if (this.y > C_HEIGHT - this.h - PLATFORM_DIST_FROM_BOTTOM) {
+            this.y = C_HEIGHT - this.h - PLATFORM_DIST_FROM_BOTTOM
             this.velY *= -1;
         }
     }
