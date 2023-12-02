@@ -2,7 +2,7 @@ import { PLATFORM_DIST_FROM_BOTTOM } from "./index.js";
 import { C_WIDTH, C_HEIGHT, CANVAS_CONTEXT as ctx } from "./Globals.js";;
 
 class Entity {
-    constructor({ position, dimension, velocity, color = 'red' }, isCircular = false, radius = 10) {
+    constructor({ position, dimension, velocity, color = 'red' }, imageSrc, isCircular = false, radius = 10) {
         this.x = position.x;
         this.y = position.y;
         this.w = dimension.w;
@@ -14,6 +14,9 @@ class Entity {
         this.health = 100;
         this.isCircular = isCircular
         this.radius = radius
+
+        this.image = new Image();
+        this.image.src = imageSrc;
     }
 
     update() {
@@ -22,15 +25,18 @@ class Entity {
     }
 
     render() {
-        ctx.fillStyle = this.color;
-        if (this.isCircular) {
-            ctx.beginPath();
-            ctx.arc(this.x + this.radius, this.y + this.radius, this.radius, 0, Math.PI*2, true);
-            ctx.fill()
-        }
-        else {
-            ctx.fillRect(this.x, this.y, this.w, this.h);
-        }
+        ctx.drawImage(
+            this.image,
+            0,
+            0,
+            this.image.width,
+            this.image.height,
+            this.x,
+            this.y,
+            this.w,
+            this.h
+        );
+
     }
 
     keepInBounds() {

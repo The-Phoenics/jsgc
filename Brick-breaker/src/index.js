@@ -3,53 +3,95 @@ import Paddle from "./Paddle.js";
 import Brick from "./Brick.js";
 import { aabb } from "./utils.js";
 
-import { MARGIN, brickHeight, brickWidth, ROW, COL, TOTAL_BRICKS } from "./Brick.js";
+import { PADDLE_XPOS } from "./Paddle.js";
+import { HORIZONTAL_BRICK_MARGIN, VERTICAL_BRICK_MARGIN, brickHeight, brickWidth, ROW, COL, TOTAL_BRICKS } from "./Brick.js";
 import { C_WIDTH, C_HEIGHT, CANVAS_CONTEXT as ctx, CANVAS as canvas } from "./Globals.js";
 import { clear_canvas } from "./Globals.js";
 
+// ----------------------------------------- //
+
 export const PLATFORM_DIST_FROM_BOTTOM = 0;
 export let GAME_OVER = false;
+let GAME_START = false;
 
-ctx.fillRect(0, 0, canvas.width, canvas.height);
+// paddle position + half of paddle width - half of ball radius
+const BALL_POSX = PADDLE_XPOS + 50 - 12
 
 // ----------------------------------------- //
 
+// background
+let imageBackg = new Image();
+imageBackg.src = './img/space_background.png';
+function drawBackground() {
+    ctx.drawImage(
+        imageBackg,
+        0,
+        0,
+        imageBackg.width,
+        imageBackg.height,
+        0,
+        0,
+        C_WIDTH,
+        C_HEIGHT
+    );
+}
+
+// paddle
 let paddle = new Paddle();
 
+// ball
 let ball = new Entity({
     position: {
-        x: 300,
-        y: 300
+        x: BALL_POSX,
+        y: C_HEIGHT - 80
     },
     dimension: {
         w: 25,
         h: 25
     },
     velocity: {
-        x: 2,
-        y: 2
-    }
-}, true)
+        x: 1.5,
+        y: -1.5
+    },
+}, './img/ball.png', true)
 
+// bricks
 const bricks = [];
 function initBricks() {
     let x = 10;
-    let y = 200;
-    for (let i = 0; i < 5; i++) {
-        let brick = new Brick(x, y);
-        bricks.push(brick)
-        x += brickWidth + MARGIN
+    let y = 0;
+    for (let i = 0; i < ROW; i++) {
+        y += VERTICAL_BRICK_MARGIN;
+        x = 10;
+        for (let i = 0; i < COL; i++) {
+            let brick = new Brick(x, y);
+            bricks.push(brick)
+            x += brickWidth + HORIZONTAL_BRICK_MARGIN
+        }
     }
 }
 initBricks();
 
 function renderBricks() {
     bricks.forEach(brick => {
-        brick.render()
+        if (brick.isAlive)
+            brick.render()
     })
 }
 
-// game loop
+function resetGame() {
+    // reset ball
+    ball.x = BALL_POSX
+    ball.y = C_HEIGHT - 80
+    ball.velX = 1.5
+    ball.velY = -1.5
+
+    paddle.reset();
+    initBricks();
+    GAME_START = false;
+}
+
+// ----------------- Game Loop ----------------- //
 function animate() {
     window.requestAnimationFrame(animate);
 
@@ -60,11 +102,11 @@ function animate() {
         onGameOver();
     }
 }
-
 animate();
 
 function runGame() {
-    update();
+    if (GAME_START)
+        update();
     render();    
 }
 
@@ -87,9 +129,12 @@ function update() {
     }
 
     bricks.forEach(brick => {
-        if (aabb({rect1: brick, rect2: ball})) {
-            console.log('Collided!')
-            ball.velY *= -1
+        if (brick.isAlive) {
+            if (aabb({rect1: brick, rect2: ball})) {
+                brick.health -= 1;
+                brick.switchBrickImage();
+                ball.velY *= -1
+            }
         }
     })
 }
@@ -97,21 +142,28 @@ function update() {
 // ----------------- Render ----------------- //
 function render() {
     clear_canvas()
+    drawBackground();
     renderBricks()
     ball.render()
     paddle.render()
 }
 
 function onGameOver() {
-    console.log('Game Over!!');
+    resetGame();
+    render();
+    console.log('Game Over!');
 }
 
 // ----------------- Events ----------------- //
 window.addEventListener('keydown', (e) => {
     if (e.key === 'd') {
+        GAME_START = true;
         paddle.velX = 2
+        GAME_OVER = false
     }
     if (e.key === 'a') {
         paddle.velX = -2
+        GAME_START = true
+        GAME_OVER = false
     }
 })

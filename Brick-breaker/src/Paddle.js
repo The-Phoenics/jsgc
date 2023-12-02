@@ -1,12 +1,14 @@
 import Entity from "./Entity.js";
-import { C_WIDTH, CANVAS_CONTEXT as ctx } from "./Globals.js";;
+import { C_HEIGHT, C_WIDTH, CANVAS_CONTEXT as ctx } from "./Globals.js";
+
+export const PADDLE_XPOS = C_WIDTH / 2 - (100 / 2);
 
 class Paddle extends Entity {
     constructor() {
         super({
             position: {
-                x: 500,
-                y: 520
+                x: PADDLE_XPOS,
+                y: C_HEIGHT - 50
             },
             dimension: {
                 w: 100,
@@ -17,12 +19,19 @@ class Paddle extends Entity {
                 y: 0
             },
             color: 'white'
-        })
+        }, './img/paddle.png')
     }
 
     update() {
         super.update();
         this.onHittingSideWalls();
+    }
+
+    reset() {
+        this.velX = 0;
+        this.velY = 0;
+        this.x = PADDLE_XPOS,
+        this.y = C_HEIGHT - 50
     }
 
     onHittingSideWalls() {

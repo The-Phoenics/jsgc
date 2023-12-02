@@ -1,8 +1,8 @@
 export const CANVAS = document.querySelector('canvas');
 export const CANVAS_CONTEXT = CANVAS.getContext('2d');
 
-export const C_WIDTH = 1024;
-export const C_HEIGHT = 576;
+export const C_WIDTH = 1024 + 200;
+export const C_HEIGHT = 576 + 200;
 
 CANVAS.width = C_WIDTH;
 CANVAS.height = C_HEIGHT;
