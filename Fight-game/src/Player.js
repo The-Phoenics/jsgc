@@ -28,8 +28,10 @@ class Player extends Entity {
                 row: 1,
                 column: 10
             }
-        });
+        }, 5, 4);
 
+        this.animator.cropX = 65;
+        this.animator.cropY = 55;
         this.playerState = 'IDLE';
     }
 

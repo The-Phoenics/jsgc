@@ -20,7 +20,7 @@ const BALL_POSX = PADDLE_XPOS + 50 - 12
 // ----------------------------------------- //
 
 // background
-let imageBackg = new Image();
+const imageBackg = new Image();
 imageBackg.src = './img/space_background.png';
 function drawBackground() {
     ctx.drawImage(
@@ -37,10 +37,10 @@ function drawBackground() {
 }
 
 // paddle
-let paddle = new Paddle();
+const paddle = new Paddle();
 
 // ball
-let ball = new Entity({
+const ball = new Entity({
     position: {
         x: BALL_POSX,
         y: C_HEIGHT - 80
@@ -56,7 +56,7 @@ let ball = new Entity({
 }, './img/ball.png', true)
 
 // bricks
-const bricks = [];
+let bricks = [];
 function initBricks() {
     let x = 10;
     let y = 0;
@@ -87,6 +87,7 @@ function resetGame() {
     ball.velY = -1.5
 
     paddle.reset();
+    bricks = [];
     initBricks();
     GAME_START = false;
 }
