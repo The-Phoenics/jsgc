@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chess Game</title>
+    <link rel="shortcut icon" href="#">
+    <style>
+        body {
+            height: 100vh;
+            background-color: #666;
+            position: relative;
+            background-image: linear-gradient(rgba(1, 1, 1, 0.3), rgba(1, 1, 1, 0.5));
+            background-position: center;
+            background-size: cover;
+        }
+
+        canvas {
+            cursor: none;
+            display: block;
+            margin: 50px auto;
+            border-radius: 3px;
+            /* reduce blur */
+            image-rendering: pixelated;
+        }
+
+        h1 {
+            color: red;
+            position: absolute;
+            top: 44%;
+            left: 44%;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <h1>Game Over</h1>
+    <canvas></canvas>
+</body>
+<script type="module" defer src="src/index.js"></script>
+</html>
