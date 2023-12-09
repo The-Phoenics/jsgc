@@ -7,6 +7,7 @@ import { PADDLE_XPOS } from "./Paddle.js";
 import { HORIZONTAL_BRICK_MARGIN, VERTICAL_BRICK_MARGIN, brickHeight, brickWidth, ROW, COL, TOTAL_BRICKS } from "./Brick.js";
 import { C_WIDTH, C_HEIGHT, CANVAS_CONTEXT as ctx, CANVAS as canvas } from "./Globals.js";
 import { clear_canvas } from "./Globals.js";
+import { play_hit_audio } from "./Globals.js";
 
 // ----------------------------------------- //
 
@@ -132,6 +133,7 @@ function update() {
     bricks.forEach(brick => {
         if (brick.isAlive) {
             if (aabb({rect1: brick, rect2: ball})) {
+                play_hit_audio()
                 brick.health -= 1;
                 brick.switchBrickImage();
                 ball.velY *= -1
@@ -152,7 +154,6 @@ function render() {
 function onGameOver() {
     resetGame();
     render();
-    console.log('Game Over!');
 }
 
 // ----------------- Events ----------------- //
