@@ -59,7 +59,8 @@ class Game {
         for (let i = 0; i < this.board.length(); i++) {
             let row = 0
             let col = 0
-
+            
+            
             
         }
     }

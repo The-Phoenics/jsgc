@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="#" />
+    <title>Dino Runner</title>
+    <style>
+        body {
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+            background-color: rgb(20, 20, 20);
+            overflow: hidden;
+        }
+
+        canvas {
+            /* reduce blur */
+            image-rendering: pixelated;
+        }
+
+        h1 {
+            color: red;
+            position: absolute;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <h1>Game Over</h1>
+    <canvas></canvas>
+</body>
+    <script type="module" defer src="src/index.js"></script>
+</html>

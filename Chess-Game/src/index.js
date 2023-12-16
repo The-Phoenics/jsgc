@@ -19,4 +19,8 @@ function game_loop() {
     }
 }
 
-game_loop()
+function main() {
+    game_loop()
+}
+
+main()
