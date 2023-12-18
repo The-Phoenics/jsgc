@@ -18,7 +18,7 @@ class Zombie {
                 column: 4
             }
         })
-        this.velX = -1
+        this.velX = -1.5
     }
 
     update() {

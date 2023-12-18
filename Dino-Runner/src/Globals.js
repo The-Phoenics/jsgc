@@ -6,7 +6,7 @@ export const C_HEIGHT = window.innerHeight
 
 export const DINO_POS_Y = C_HEIGHT - 200 + 75
 export const FLOOR_POS_Y = C_HEIGHT - 135 + 75
-export const DINO_JUMP_LIMIT = 100
+export const DINO_JUMP_LIMIT = 200
 
 // const hit_audio = new Audio('./img/hitball.wav')
 // export function play_hit_audio() {

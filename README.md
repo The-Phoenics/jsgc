@@ -1,6 +1,6 @@
 # jsgc
 
-Javascript games collection
+**J**ava**S**cript **G**ames **C**ollection
 
 ---
 

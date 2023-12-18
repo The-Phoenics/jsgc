@@ -4,6 +4,7 @@ import Dino from "./Dino.js";
 import Drawable from "./utils/Drawable.js";
 import Movable from "./utils/Movable.js";
 import Zombie from "./Zombie.js"
+import Parallax from "./utils/Parallax.js";
 
 class Game {
     constructor() {
@@ -16,7 +17,7 @@ class Game {
         this.dino = new Dino
         // background
         this.backg = new Drawable({
-            imgSrc: './img/ocean.png',
+            imgSrc: './img/sun_background.png',
             position: {
                 x: 0,
                 y: 0
@@ -24,6 +25,66 @@ class Game {
             dimension: {
                 w: C_WIDTH,
                 h: C_HEIGHT
+            }
+        })
+        this.bigMountain = new Parallax({
+            imgSrc: './img/big_mountain.png',
+            position: {
+                x: 0,
+                y: 0
+            },
+            dimension: {
+                w: C_WIDTH,
+                h: C_HEIGHT
+            },
+            velocity: {
+                x:-0.05,
+                y: 0
+            }
+        })
+        this.mountian = new Parallax({
+            imgSrc: './img/mountains.png',
+            position: {
+                x: 0,
+                y: 0
+            },
+            dimension: {
+                w: C_WIDTH,
+                h: C_HEIGHT
+            },
+            velocity: {
+                x:-0.1,
+                y: 0
+            }
+        })
+        this.mountTrees = new Parallax({
+            imgSrc: './img/mount_trees.png',
+            position: {
+                x: 0,
+                y: 0
+            },
+            dimension: {
+                w: C_WIDTH,
+                h: C_HEIGHT
+            },
+            velocity: {
+                x:-0.2,
+                y: 0
+            }
+        })
+        this.foreTrees = new Parallax({
+            imgSrc: './img/foreTrees.png',
+            position: {
+                x: 0,
+                y: 0
+            },
+            dimension: {
+                w: C_WIDTH,
+                h: C_HEIGHT
+            },
+            velocity: {
+                x:-0.4,
+                y: 0
             }
         })
         // floor
@@ -46,11 +107,11 @@ class Game {
 
     update() {
         // update
+        this.mountian.update()
+        this.mountTrees.update()
+        this.bigMountain.update()
         this.floor.update()
-        // to keep floor within canvas
-        if (this.floor.x + this.floor.w < C_WIDTH) {
-            this.floor.x = 5
-        }
+        this.foreTrees.update()
         this.dino.update()
         this.zombie.update()
     }
@@ -58,6 +119,10 @@ class Game {
     render() {
         clear_canvas()
         this.backg.render()
+        this.bigMountain.render()
+        this.mountian.render()
+        this.mountTrees.render()
+        this.foreTrees.render()
         this.floor.render()
         this.zombie.render()
         this.dino.render()

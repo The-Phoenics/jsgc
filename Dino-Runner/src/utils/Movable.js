@@ -1,4 +1,4 @@
-import { CANVAS_CONTEXT as ctx } from '../Globals.js'
+import { C_WIDTH, CANVAS_CONTEXT as ctx } from '../Globals.js'
 import Drawable from './Drawable.js'
 
 class Movable extends Drawable {
@@ -6,7 +6,10 @@ class Movable extends Drawable {
         super({
             imgSrc, position, dimension
         })
-
+        
+        // set it to false if don't want to keep object in canvas
+        // after it goes out from left side of canvas
+        this.keepWithinCanvas = true;
         this.velX = velocity.x
         this.velY = velocity.y
     }
@@ -14,6 +17,12 @@ class Movable extends Drawable {
     update() {
         this.x += this.velX
         this.y += this.velY
+        if (this.keepWithinCanvas) {
+            // keep the movable within canvas
+            if (this.x + this.w < C_WIDTH) {
+                this.x = 5
+            }
+        }
     }
 
     debug() {
