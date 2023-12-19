@@ -1,17 +1,22 @@
-import { CANVAS_CONTEXT as ctx, DINO_POS_Y } from "./Globals.js"
+import { DEBUG_MODE, DINO_POS_Y } from "./Globals.js"
 import Animator from "./utils/Animator.js"
+import Hitbox from "./utils/Hitbox.js"
 
 class Dino {
     constructor() {
+        this.x = 180
+        this.y = DINO_POS_Y
+        this.w = 80
+        this.h = 80 
         this.animator = new Animator({
             imageSrc: './img/dinospr.png',
             position: {
-                x: 180,
-                y: DINO_POS_Y
+                x: this.x,
+                y: this.y
             },
             dimension: {
-                w: 80,
-                h: 80
+                w: this.w,
+                h: this.h
             },
             spritesheet: {
                 row: 3,
@@ -19,6 +24,17 @@ class Dino {
             }
             // 24 col total
         })
+
+        this.hitbox = new Hitbox({
+            position: {
+                x: this.x,
+                y: this.y
+            },
+            dimension: {
+                w: this.w,
+                h: this.h
+            }
+        }, 'green')
 
         this.isDying = false
         
@@ -33,7 +49,7 @@ class Dino {
 
     jump() {
         if (this.jumpRemaining > 0) {
-            this.animator.y -= this.jumpValue 
+            this.y -= this.jumpValue 
             this.jumpRemaining -= this.jumpValue + this.jumpScaler    
             this.jumpScaler += 0.1
         } else {
@@ -43,18 +59,18 @@ class Dino {
     }
 
     isGrounded() {
-        return this.animator.y < DINO_POS_Y && !this.isJumping
+        return this.y < DINO_POS_Y && !this.isJumping
     }
 
     gravity() {
         if (this.isGrounded()) {
-            this.animator.y += this.gravityValue + this.gravityScaler
+            this.y += this.gravityValue + this.gravityScaler
             this.gravityScaler += 0.05
         } else {
             this.gravityScaler = 0.1
         }
     }
-
+wv    
     update() {
         if (this.isJumping) {
             // jump state
@@ -72,11 +88,18 @@ class Dino {
         }
         // gravity for dino
         this.gravity()
+        // update animator
+        this.animator.update(this.x, this.y)
+        // update hitbox
+        this.hitbox.update(this.x, this.y)
     }
 
     render() {
         if (this.animator.isReady) {
             this.animator.render()
+        }
+        if (DEBUG_MODE) {
+            this.hitbox.render()
         }
     }
 }

@@ -4,7 +4,7 @@ export const CANVAS_CONTEXT = CANVAS.getContext('2d');
 export const C_WIDTH = 1024 + 200;
 export const C_HEIGHT = 576 + 200;
 
-const hit_audio = new Audio('./img/hitball.wav')
+const hit_audio = new Audio('./sound/hitball.wav')
 export function play_hit_audio() {
     hit_audio.play()
 }

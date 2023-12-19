@@ -42,7 +42,9 @@ class Animator {
 
     // change currentColLimit to change the no. of columns
     // available to animate in one row (current row)
-    update(currentColLimit = this.column, animationFrequency = 15) {
+    update(x, y, currentColLimit = this.column, animationFrequency = 15) {
+        this.x = x
+        this.y = y
         this.tmp++;
         if (this.tmp >= animationFrequency) {
             this.tmp = 0;

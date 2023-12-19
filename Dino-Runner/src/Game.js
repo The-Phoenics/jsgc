@@ -10,7 +10,34 @@ class Game {
     constructor() {
         this.GAME_START = true;
         this.GAME_OVER = false;
-        
+
+        this.init()
+    }
+
+    update() {
+        // update
+        this.mountian.update()
+        this.mountTrees.update()
+        this.bigMountain.update()
+        this.floor.update()
+        this.foreTrees.update()
+        this.dino.update()
+        this.zombie.update()
+    }
+
+    render() {
+        clear_canvas()
+        this.backg.render()
+        this.bigMountain.render()
+        this.mountian.render()
+        this.mountTrees.render()
+        this.foreTrees.render()
+        this.floor.render()
+        this.zombie.render()
+        this.dino.render()
+    }
+
+    init() {
         // zombie
         this.zombie = new Zombie()
         // player
@@ -103,29 +130,6 @@ class Game {
                 y: 0
             }
         })
-    }
-
-    update() {
-        // update
-        this.mountian.update()
-        this.mountTrees.update()
-        this.bigMountain.update()
-        this.floor.update()
-        this.foreTrees.update()
-        this.dino.update()
-        this.zombie.update()
-    }
-
-    render() {
-        clear_canvas()
-        this.backg.render()
-        this.bigMountain.render()
-        this.mountian.render()
-        this.mountTrees.render()
-        this.foreTrees.render()
-        this.floor.render()
-        this.zombie.render()
-        this.dino.render()
     }
 }
 

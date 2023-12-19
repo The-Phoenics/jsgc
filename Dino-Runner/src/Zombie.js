@@ -1,36 +1,63 @@
-import { C_HEIGHT, C_WIDTH, CANVAS_CONTEXT as ctx, DINO_POS_Y } from "./Globals.js"
+import { C_WIDTH, DINO_POS_Y, DEBUG_MODE } from "./Globals.js"
 import Animator from "./utils/Animator.js";
+import Hitbox from "./utils/Hitbox.js";
 
 class Zombie {
     constructor() {
+        this.x = 700
+        this.y = DINO_POS_Y + 10
+        this.w = 60
+        this.h = 60
+
+        // zombie animator
         this.animator = new Animator({
             imageSrc: './img/zombie_run.png',
             position: {
-                x: 700,
-                y: DINO_POS_Y + 10
+                x: this.x,
+                y: this.y
             },
             dimension: {
-                w: 60,
-                h: 60
+                w: this.w,
+                h: this.h
             },
             spritesheet: {
                 row: 1,
                 column: 4
             }
         })
+
+        // zombie velocity
         this.velX = -1.5
+
+        // enemy hitbox
+        this.hitbox = new Hitbox({
+            position: {
+                x: this.x,
+                y: this.y
+            },
+            dimension: {
+                w: this.w,
+                h: this.h
+            }
+        }, 'red')
     }
 
     update() {
-        if (this.animator.x + this.animator.w < 0) {
-            this.animator.x = C_WIDTH + Math.floor(Math.random() * 30 + 5)
+        if (this.x + this.w < 0) {
+            this.x = C_WIDTH + Math.floor(Math.random() * 30 + 5)
         }
-        this.animator.x += this.velX
-        this.animator.update()
+        this.x += this.velX
+        // update animator
+        this.animator.update(this.x, this.y)
+        // update hitbox
+        this.hitbox.update(this.x, this.y)
     }
 
     render() {
         this.animator.render()
+        if (DEBUG_MODE) {
+            this.hitbox.render()
+        }
     }
 }
 

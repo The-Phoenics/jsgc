@@ -9,6 +9,7 @@
             background-color: #666;
             position: relative;
             background: rgb(0,0,0);
+            overflow: hidden;
             background: linear-gradient(90deg, rgba(0,0,0,1) 0%, rgba(22,46,64,1) 0%, rgba(16,30,33,1) 100%, rgba(0,0,0,1) 100%);
         }
 
@@ -22,16 +23,29 @@
         }
 
         h1 {
+            font-family: 'Franklin Gothic Medium', 'Arial', Arial, sans-serif;
             color: red;
             position: absolute;
-            top: 44%;
-            left: 44%;
-            display: none;
+            top: 48%;
+            left: 40.5%;
+            color: #eee;
+            font-size: 2rem;
+            display: block;
+            opacity: 80%;
+            box-shadow: 1px 1px 3px black;
+        }
+
+        .two {
+            color: #eee;
+            font-size: 1.7rem;
+            left: 43%;
+            top: 55%;
         }
     </style>
 </head>
 <body>
-    <h1>Game Over</h1>
+    <h1 class="controls">Press any key to start</h1>
+    <h1 class="controls two">Controls - A and D</h1>
     <canvas></canvas>
 </body>
     <script type="module" defer src="src/index.js"></script>
