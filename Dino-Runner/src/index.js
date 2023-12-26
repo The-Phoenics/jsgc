@@ -1,5 +1,7 @@
 import Game from "./Game.js";
-import { CANVAS_CONTEXT as ctx, CANVAS as canvas, DINO_JUMP_LIMIT } from "./Globals.js";
+import { DINO_JUMP_LIMIT } from "./Globals.js";
+
+// game entry point
 
 let GAME_OVER = false;
 let GAME_START = false;

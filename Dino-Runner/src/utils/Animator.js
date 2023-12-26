@@ -55,21 +55,24 @@ class Animator {
             this.currentFrameX = 0;
         }
     }
-
+    
     render() {
-        // change the value of currentFrameY to switch row wise,
-        // cuurentFrameX for switching column wise
-        ctx.drawImage(
-            this.image,
-            (this.sx + this.cropX + this.sw * this.currentFrameX),
-            (this.sy + this.cropY + this.sh * this.currentFrameY),
-            this.sw,
-            this.sh,
-            this.x,
-            this.y,
-            this.w * this.scaleX,
-            this.h * this.scaleY
-        );
+        (this.isReady)
+        if (this.isReady) {
+            // change the value of currentFrameY to switch row wise,
+            // cuurentFrameX for switching column wise
+            ctx.drawImage(
+                this.image,
+                (this.sx + this.cropX + this.sw * this.currentFrameX),
+                (this.sy + this.cropY + this.sh * this.currentFrameY),
+                this.sw,
+                this.sh,
+                this.x,
+                this.y,
+                this.w * this.scaleX,
+                this.h * this.scaleY
+            );
+        }
     }
 }
 

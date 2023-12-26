@@ -3,8 +3,8 @@ import Animator from "./utils/Animator.js";
 import Hitbox from "./utils/Hitbox.js";
 
 class Zombie {
-    constructor() {
-        this.x = 700
+    constructor(x) {
+        this.x = x
         this.y = DINO_POS_Y + 10
         this.w = 60
         this.h = 60

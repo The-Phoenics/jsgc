@@ -70,7 +70,7 @@ class Dino {
             this.gravityScaler = 0.1
         }
     }
-wv    
+
     update() {
         if (this.isJumping) {
             // jump state
