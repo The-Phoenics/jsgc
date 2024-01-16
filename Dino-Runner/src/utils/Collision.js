@@ -7,3 +7,7 @@ export function aabb({ rect1, rect2 }) {
         rect1.y + rect1.h > rect2.y
     );
 }
+
+export function randomRange(min, max) {
+    return Math.floor(Math.random() * (max - min) + min)
+}

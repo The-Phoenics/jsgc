@@ -6,7 +6,6 @@ class Movable extends Drawable {
         super({
             imgSrc, position, dimension
         })
-        
         // set it to false if don't want to keep object in canvas
         // after it goes out from left side of canvas
         this.keepWithinCanvas = true;

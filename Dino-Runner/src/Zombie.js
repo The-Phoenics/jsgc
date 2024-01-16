@@ -1,6 +1,7 @@
 import { C_WIDTH, DINO_POS_Y, DEBUG_MODE } from "./Globals.js"
 import Animator from "./utils/Animator.js";
 import Hitbox from "./utils/Hitbox.js";
+import { randomRange } from "./utils/Collision.js"
 
 class Zombie {
     constructor(x) {
@@ -55,14 +56,13 @@ class Zombie {
 
     update() {
         if (this.x + this.w < 0) {
-            // TODO: spawn at a random place to right of the window
-            // this.x = C_WIDTH + Math.floor(Math.random() * 30 + 5)
+            this.x = C_WIDTH + randomRange(800, 1800) + 100
         }
         this.x += this.velX
         // update animator
         this.animator.update(this.x, this.y)
         // update hitbox
-        this.hitbox.update(this.x, this.y)
+        this.hitbox.update(this.x, this.y) 
     }
 
     render() {

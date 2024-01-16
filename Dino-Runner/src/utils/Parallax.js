@@ -17,7 +17,6 @@ class Parallax {
         })
         this.drawableTwo.keepWithinCanvas = false
         this.drawableTwo.x = this.drawableOne.w
-        
     }
 
     setVelocity(velocity = { x: 0, y: 0 }) {

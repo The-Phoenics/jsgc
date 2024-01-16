@@ -8,21 +8,19 @@ import ZombieManager from "./ZombieManager.js"
 
 class Game {
     constructor() {
-        this.GAME_START = true;
-        this.GAME_OVER = false;
         this.zombieManager = new ZombieManager()
         this.init()
         setInterval(() => {
             this.zombieManager.zombies.forEach(element => {
-                if (Math.abs(element.velX) > 6.0) {
+                if (Math.abs(element.velX) < 6.0) {
                     element.increaseVelX(0.1);
                 }
             })
-            if (Math.abs(this.floor.velX) > 5.0) {
+            if (Math.abs(this.floor.velX) < 5.0) {
                 this.floor.velX -= 0.1
             }
             //this.environment.increaseVelX(0.1);
-        }, 100)
+        }, 10000)
     }
 
     update() {
@@ -30,7 +28,6 @@ class Game {
         this.environment.update()
         this.dino.update(this.zombieManager.zombies)
         this.floor.update()
-        // this.zombie.update()
         this.zombieManager.update()
     }
 

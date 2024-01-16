@@ -1,21 +1,22 @@
 import Game from "./Game.js";
 import { DINO_JUMP_LIMIT } from "./Globals.js";
 
-// game entry point
-
-let GAME_OVER = false;
-let GAME_START = false;
-
-const game = new Game()
+export let GAME_OVER = false;
+export let GAME_START = false;
+let game = new Game()
 
 function game_loop() {
     window.requestAnimationFrame(game_loop)
     if (!GAME_OVER) {
+        document.querySelector('#game-over').style.display = "none"
         game.update()
         game.render()
+        // check game over
+        GAME_OVER = game.dino.health.value <= 0;
     }
     else {
         // on game over
+        document.querySelector('#game-over').style.display = "block"
     }
 }
 
@@ -29,8 +30,11 @@ main()
 document.addEventListener('keyup', event => {
     if (event.code === 'Space' && !game.dino.isJumping) {
         game.dino.isJumping = true
-        game.dino.isDying = false
-        console.log('Enter Jump state')
+        game.dino.isDying = false 
+        if (GAME_OVER) {
+            game = new Game()
+        }
+        GAME_OVER = false
     }
     if (event.code === 'KeyP') {
         game.dino.isJumping = false
@@ -41,4 +45,5 @@ document.addEventListener('keyup', event => {
         game.dino.isDying = true
         console.log('Die state')
     }
+    // if (event.code === 'KeyP') {}
 })

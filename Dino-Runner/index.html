@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -11,8 +12,10 @@
             margin: 0;
             box-sizing: border-box;
             height: 100vh;
+            width: 100%;
             background-color: rgb(20, 20, 20);
             overflow: hidden;
+            position: relative;
         }
 
         canvas {
@@ -20,16 +23,31 @@
             image-rendering: pixelated;
         }
 
-        h1 {
-            color: red;
+        #game-over {
             position: absolute;
-            display: none;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        #game-over>img {
+            width: 330px;
+            height: 64px;
+            display: block;
+            z-index: 1;
         }
     </style>
 </head>
+
 <body>
-    <h1>Game Over</h1>
+    <div id="game-over">
+        <img src="././img/game-over.png" />
+    </div>
     <canvas></canvas>
 </body>
-    <script type="module" defer src="src/index.js"></script>
+<script type="module" defer src="src/index.js"></script>
+
 </html>

@@ -48,8 +48,8 @@ class Heart {
 // Health
 class Health {
     constructor() {
-        this.value = 3;
-        this.healthCount = 3;
+        this.healthCount = 5;
+        this.value = this.healthCount;
         this.gap = 1;
         this.dimension = {
             w: 25,

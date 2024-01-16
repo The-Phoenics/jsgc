@@ -9,7 +9,7 @@ CANVAS.width = C_WIDTH;
 CANVAS.height = C_HEIGHT;
 
 // enable debug mode for logs and hitboxe rendering
-export let DEBUG_MODE = true
+export let DEBUG_MODE = false
 
 // clear canvas before rendering
 export function clear_canvas() {
