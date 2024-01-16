@@ -30,8 +30,7 @@ document.addEventListener('keyup', event => {
     if (event.code === 'Space' && !game.dino.isJumping) {
         game.dino.isJumping = true
         game.dino.isDying = false
-        game.dino.jumpRemaining = DINO_JUMP_LIMIT
-        console.log('Jump state')
+        console.log('Enter Jump state')
     }
     if (event.code === 'KeyP') {
         game.dino.isJumping = false
@@ -40,6 +39,6 @@ document.addEventListener('keyup', event => {
     if (event.code === 'KeyD') {
         game.dino.isJumping = false
         game.dino.isDying = true
-      console.log('Die state')
+        console.log('Die state')
     }
 })

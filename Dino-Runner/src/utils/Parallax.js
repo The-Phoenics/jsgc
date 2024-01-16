@@ -20,6 +20,11 @@ class Parallax {
         
     }
 
+    setVelocity(velocity = { x: 0, y: 0 }) {
+        this.drawableOne.setVelocity(velocity)
+        this.drawableTwo.setVelocity(velocity)
+    }
+
     repeatUpdate() {
         if (this.drawableOne.x + this.drawableOne.w <= 0) {
             this.drawableOne.x = this.drawableOne.w

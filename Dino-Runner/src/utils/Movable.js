@@ -14,6 +14,11 @@ class Movable extends Drawable {
         this.velY = velocity.y
     }
 
+    setVelocity(velocity) {
+        this.velX = velocity.x
+        this.velY = velocity.y
+    }
+
     update() {
         this.x += this.velX
         this.y += this.velY

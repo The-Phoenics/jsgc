@@ -1,13 +1,32 @@
 import { DEBUG_MODE, DINO_POS_Y } from "./Globals.js"
 import Animator from "./utils/Animator.js"
 import Hitbox from "./utils/Hitbox.js"
+import Health from "./utils/Health.js"
+import { aabb } from "./utils/Collision.js"
 
 class Dino {
     constructor() {
         this.x = 180
         this.y = DINO_POS_Y
         this.w = 80
-        this.h = 80 
+        this.h = 80
+        // initialize dino
+        this.init();
+        // velocity
+        this.VEL_Y = -6
+        this.velocity = {
+            x: 0,
+            y: this.VEL_Y 
+        }
+        this.gravity = 2;
+        // health for dino
+        this.health = new Health();
+        this.isJumping = false;
+        this.JUMP_LIMIT = DINO_POS_Y - 150;
+        this.isDying = false
+    }
+
+    init() {
         this.animator = new Animator({
             imageSrc: './img/dinospr.png',
             position: {
@@ -33,45 +52,37 @@ class Dino {
             dimension: {
                 w: this.w,
                 h: this.h
+            },
+            offset: {
+                top:    -23,
+                bottom: -23,
+                left:   -23,
+                right:  -23
             }
         }, 'green')
-
-        this.isDying = false
-        
-        this.isJumping = false
-        this.jumpRemaining = 0
-        this.jumpValue = 2
-        this.jumpScaler = 0.1
-
-        this.gravityValue = 0.3
-        this.gravityScaler = 0.1
     }
 
     jump() {
-        if (this.jumpRemaining > 0) {
-            this.y -= this.jumpValue 
-            this.jumpRemaining -= this.jumpValue + this.jumpScaler    
-            this.jumpScaler += 0.1
-        } else {
+        if (this.y < this.JUMP_LIMIT) {
+            this.velocity.y = 1
+            //var dropVel = function() { this.velocity.y = 10 }
+            //setTimeout(dropVel, 50)
+        }
+        this.y += this.gravity 
+        this.y += this.velocity.y
+
+        if (this.y > DINO_POS_Y) {
             this.isJumping = false
-            this.jumpScaler = 0.1
+            this.velocity.y = this.VEL_Y 
+            this.y = DINO_POS_Y
         }
     }
 
     isGrounded() {
-        return this.y < DINO_POS_Y && !this.isJumping
+        return this.y == DINO_POS_Y
     }
 
-    gravity() {
-        if (this.isGrounded()) {
-            this.y += this.gravityValue + this.gravityScaler
-            this.gravityScaler += 0.05
-        } else {
-            this.gravityScaler = 0.1
-        }
-    }
-
-    update() {
+    update(zombieArray) {
         if (this.isJumping) {
             // jump state
             this.jump()
@@ -86,12 +97,30 @@ class Dino {
             this.animator.animateRow(1)
             this.animator.update()
         }
-        // gravity for dino
-        this.gravity()
         // update animator
         this.animator.update(this.x, this.y)
         // update hitbox
         this.hitbox.update(this.x, this.y)
+        // update collision
+        this.updateCollision(zombieArray)
+    }
+
+    updateCollision(zombieArray) {
+        for (let i = 0; i < zombieArray.length; i++) {
+            let zombie = zombieArray[i]
+            if (!zombie.hasCollided && this.isColliding(zombie)) {
+                console.log("Collided!");
+                this.health.reduceHealth();
+                zombie.hasCollided = true;
+            }
+        }
+    }
+
+    isColliding(zombie) {
+        return aabb({
+            rect1: zombie.hitbox,
+            rect2: this.hitbox
+        });
     }
 
     render() {
@@ -101,6 +130,8 @@ class Dino {
         if (DEBUG_MODE) {
             this.hitbox.render()
         }
+        // render dino health
+        this.health.render();
     }
 }
 

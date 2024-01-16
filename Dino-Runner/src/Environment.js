@@ -4,6 +4,8 @@ import { C_WIDTH, C_HEIGHT } from "./Globals.js";
 
 class Environment {
     constructor() {
+        // velocity factor for all background objects
+        this.velX = 0
         // background
         this.backg = new Drawable({
             imgSrc: './img/sun_background.png',
@@ -27,7 +29,7 @@ class Environment {
                 h: C_HEIGHT
             },
             velocity: {
-                x:-0.05,
+                x:-0.05 + this.velX,
                 y: 0
             }
         })
@@ -42,7 +44,7 @@ class Environment {
                 h: C_HEIGHT
             },
             velocity: {
-                x:-0.1,
+                x:-0.1 + this.velX,
                 y: 0
             }
         })
@@ -57,7 +59,7 @@ class Environment {
                 h: C_HEIGHT
             },
             velocity: {
-                x:-0.2,
+                x:-0.2 + this.velX,
                 y: 0
             }
         })
@@ -72,10 +74,17 @@ class Environment {
                 h: C_HEIGHT
             },
             velocity: {
-                x:-0.4,
+                x:-0.4 + this.velX,
                 y: 0
             }
         })
+    }
+
+    increaseVelX(value = 0) {
+        this.mountTrees.setVelocity (velocity = { x: this.mountTrees.x  - value, y: this.mountTrees.y  })
+        this.foreTrees.setVelocity  (velocity = { x: this.foreTrees.x   - value, y: this.foreTrees.y   })
+        this.mountain.setVelocity   (velocity = { x: this.mountain.x    - value, y: this.mountain.y    })
+        this.bigMountain.setVelocity(velocity = { x: this.bigMountain.x - value, y: this.bigMountain.y })
     }
 
     update() {

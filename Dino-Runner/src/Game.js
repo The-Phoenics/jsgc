@@ -12,14 +12,25 @@ class Game {
         this.GAME_OVER = false;
         this.zombieManager = new ZombieManager()
         this.init()
+        setInterval(() => {
+            this.zombieManager.zombies.forEach(element => {
+                if (Math.abs(element.velX) > 6.0) {
+                    element.increaseVelX(0.1);
+                }
+            })
+            if (Math.abs(this.floor.velX) > 5.0) {
+                this.floor.velX -= 0.1
+            }
+            //this.environment.increaseVelX(0.1);
+        }, 100)
     }
 
     update() {
         // update
         this.environment.update()
-        this.dino.update()
+        this.dino.update(this.zombieManager.zombies)
         this.floor.update()
-        this.zombie.update()
+        // this.zombie.update()
         this.zombieManager.update()
     }
 
@@ -39,7 +50,7 @@ class Game {
         this.zombie = new Zombie(700)
         // player
         this.dino = new Dino
-        
+
         // floor
         this.floor = new Movable({
             imgSrc: './img/floor.png',
@@ -52,7 +63,7 @@ class Game {
                 h: 32 * 2
             },
             velocity: {
-                x:-1,
+                x:-1.6,
                 y: 0
             }
         })

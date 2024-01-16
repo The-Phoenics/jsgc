@@ -8,6 +8,7 @@ class Zombie {
         this.y = DINO_POS_Y + 10
         this.w = 60
         this.h = 60
+        this.hasCollided = false;
 
         // zombie animator
         this.animator = new Animator({
@@ -27,7 +28,7 @@ class Zombie {
         })
 
         // zombie velocity
-        this.velX = -1.5
+        this.velX = -2
 
         // enemy hitbox
         this.hitbox = new Hitbox({
@@ -38,13 +39,24 @@ class Zombie {
             dimension: {
                 w: this.w,
                 h: this.h
+            },
+            offset: {
+                top:    -10,
+                bottom: -10,
+                left:   -12,
+                right:  -10
             }
         }, 'red')
     }
 
+    increaseVelX(value = 0.1) {
+        this.velX -= value
+    }
+
     update() {
         if (this.x + this.w < 0) {
-            this.x = C_WIDTH + Math.floor(Math.random() * 30 + 5)
+            // TODO: spawn at a random place to right of the window
+            // this.x = C_WIDTH + Math.floor(Math.random() * 30 + 5)
         }
         this.x += this.velX
         // update animator

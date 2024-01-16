@@ -13,7 +13,11 @@ class ZombieManager {
         this.initialX = Math.floor(Math.random() * 1000)
         console.log(this.initialX)
         for (let i = 0; i < this.count; i++) {
-            let pos = this.initialX + this.gapFactor * Math.floor(Math.random() * 10) + 1
+            let pos = 0
+            if (i == 0)
+                pos = this.initialX
+            else
+                pos = this.zombies[i - 1].x + this.gapFactor * Math.floor(Math.random() * 10) + 1
             let zombie = new Zombie(pos)
             this.initialX = pos
             this.zombies.push(zombie)
