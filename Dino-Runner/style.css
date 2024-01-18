@@ -1,0 +1,57 @@
+@font-face {
+    font-family: joystix;
+    src: url("./img/joystix_monospace.otf") format("opentype");
+}
+
+body {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    height: 100vh;
+    width: 100%;
+    background-color: rgb(20, 20, 20);
+    overflow: hidden;
+    position: relative;
+}
+
+canvas {
+    /* reduce blur */
+    image-rendering: pixelated;
+}
+
+.score {
+    font-family: 'joystix';
+    color: #faf9f6;
+    position: absolute;
+    top: 0;
+    right: 0;
+    font-size: 2rem;
+    padding: 10px;
+    margin: 10px 30px;
+    width: 50vw;
+    text-align: right;
+}
+
+#game-over {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+#game-over-img {
+    width: 330px;
+    height: 64px;
+    display: block;
+    margin: 0 auto;
+}
+
+#play-again-img {
+    margin-top: 10px;
+    width: calc(308px * 1.5);
+    height: calc(10px * 2);
+}

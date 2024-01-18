@@ -1,8 +1,9 @@
 import Game from "./Game.js";
-import { DINO_JUMP_LIMIT } from "./Globals.js";
 
 export let GAME_OVER = false;
 export let GAME_START = false;
+
+// game object
 let game = new Game()
 
 function game_loop() {

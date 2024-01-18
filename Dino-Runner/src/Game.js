@@ -5,6 +5,7 @@ import Movable from "./utils/Movable.js";
 import Zombie from "./Zombie.js"
 import Environment from "./Environment.js";
 import ZombieManager from "./ZombieManager.js"
+import Score from "./utils/Score.js";
 
 class Game {
     constructor() {
@@ -29,6 +30,7 @@ class Game {
         this.dino.update(this.zombieManager.zombies)
         this.floor.update()
         this.zombieManager.update()
+        this.score.update()
     }
 
     render() {
@@ -38,9 +40,13 @@ class Game {
         // this.zombie.render()
         this.zombieManager.render()
         this.dino.render()
+        this.score.render(this.scoreElement)
     }
 
     init() {
+        // score
+        this.scoreElement = document.querySelector('.score')
+        this.score = new Score()
         // environment (background parallax)
         this.environment = new Environment()
         // zombie
@@ -60,7 +66,7 @@ class Game {
                 h: 32 * 2
             },
             velocity: {
-                x:-1.6,
+                x: -1.6,
                 y: 0
             }
         })

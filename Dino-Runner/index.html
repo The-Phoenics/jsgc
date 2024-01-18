@@ -6,45 +6,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="shortcut icon" href="#" />
     <title>Dino Runner</title>
-    <style>
-        body {
-            padding: 0;
-            margin: 0;
-            box-sizing: border-box;
-            height: 100vh;
-            width: 100%;
-            background-color: rgb(20, 20, 20);
-            overflow: hidden;
-            position: relative;
-        }
-
-        canvas {
-            /* reduce blur */
-            image-rendering: pixelated;
-        }
-
-        #game-over {
-            position: absolute;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-        }
-
-        #game-over>img {
-            width: 330px;
-            height: 64px;
-            display: block;
-            z-index: 1;
-        }
-    </style>
+    <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
+    <div class="score">0</div>
     <div id="game-over">
-        <img src="././img/game-over.png" />
+        <img id="game-over-img" src="./img/game-over.png" />
+        <img id="play-again-img" src="./img/text.png" alt="Press Space to play again">
     </div>
     <canvas></canvas>
 </body>
