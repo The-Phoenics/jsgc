@@ -2,12 +2,12 @@ import { CANVAS_CONTEXT as ctx } from "../Globals.js";
 
 class Animator {
     constructor({ imageSrc, position, dimension, spritesheet }, scaleX = 1, scaleY = 1) {
-        this.image = new Image()
-        this.image.src = imageSrc
         this.isReady = false
+        this.image = new Image()
         this.image.onload = () => {
             this.isReady = true
         }
+        this.image.src = imageSrc
 
         this.x = position.x
         this.y = position.y
@@ -55,12 +55,10 @@ class Animator {
             this.currentFrameX = 0;
         }
     }
-    
+
     render() {
-        (this.isReady)
+        this.image.isReady
         if (this.isReady) {
-            // change the value of currentFrameY to switch row wise,
-            // cuurentFrameX for switching column wise
             ctx.drawImage(
                 this.image,
                 (this.sx + this.cropX + this.sw * this.currentFrameX),

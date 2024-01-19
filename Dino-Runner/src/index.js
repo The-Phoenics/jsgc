@@ -44,7 +44,5 @@ document.addEventListener('keyup', event => {
     if (event.code === 'KeyD') {
         game.dino.isJumping = false
         game.dino.isDying = true
-        console.log('Die state')
     }
-    // if (event.code === 'KeyP') {}
 })

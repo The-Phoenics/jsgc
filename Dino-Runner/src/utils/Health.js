@@ -90,9 +90,6 @@ class Health {
         if (this.value > 0) {
             this.value--;
             this.hearts[this.value].isFull = false;
-        } else {
-            if (DEBUG_MODE)
-                console.log('health: 0');
         }
     }
 
