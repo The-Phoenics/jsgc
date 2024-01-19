@@ -1,5 +1,7 @@
 .vscode/*
 .vscode
 
+.vercel
+
 chess_assets
 chess_assets/*
