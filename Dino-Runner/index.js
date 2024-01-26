@@ -1,4 +1,4 @@
-import Game from "./Game.js";
+import Game from "./src/Game.js";
 
 export let GAME_OVER = false;
 export let GAME_START = false;

@@ -31,7 +31,6 @@ class Animator {
         this.tmp++;
         if (this.tmp >= animationFrequency) {
             this.tmp = 0;
-            console.log(this.tmp);
             this.currentFrameX++;
         }
 

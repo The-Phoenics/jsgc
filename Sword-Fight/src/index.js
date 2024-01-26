@@ -101,7 +101,6 @@ const keys = {
 
 // events
 window.addEventListener('keydown', (e) => {
-    // console.log(e);
     switch (e.key) {
         case 'a':
             keys.a.pressed = true;
@@ -206,7 +205,6 @@ function runGame() {
         }
         player.isAttacking = false;
         player.weapon.render(); // DBG
-        console.log('Player attacked enemy');
     }
 
     if (aabb({ rect1: enemy.weapon, rect2: player })
@@ -218,7 +216,6 @@ function runGame() {
         }
         enemy.isAttacking = false;
         enemy.weapon.render(); // DBG
-        console.log('Enemy attacked player');
     }
 
     // ---------------------- RENDER ---------------------- // 
