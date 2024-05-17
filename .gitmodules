@@ -1,0 +1,3 @@
+[submodule "Tetris-ts"]
+	path = Tetris-ts
+	url = https://github.com/The-Phoenics/Tetris-ts
